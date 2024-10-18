@@ -14,18 +14,19 @@ io.on("connection", (socket) => {
 
   // Listen for 'room:join' event
   socket.on("room:join", (data) => {
-    const { email } = data; // Ensure the data contains the 'email'
+    const { email,room } = data; // Ensure the data contains the 'email'
 
     // Map email to socket ID
     emailToSocketIdMap.set(email, socket.id);
     socketIdToEmailMap.set(socket.id, email);
 
     // Emit an event to the specific socket
-    io.to(socket.id).emit("room:join", data);
-
+    io.to(room).emit("user:joined", {email,id:socket.id});
+    socket.join(room);
+    io.to(socket.id).emit("room:join",data);
     console.log(`User with email ${email} joined with socket ID: ${socket.id}`);
   });
-
+ 
   // Handle disconnection
   socket.on("disconnect", () => {
     console.log(`Socket Disconnected: ${socket.id}`);
