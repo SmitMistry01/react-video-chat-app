@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useSocket } from "../src/context/SocketProvider";
-import {ReactPLayer} from ''
 const RoomScreen = () => {
   const socket = useSocket();
   const [remoteSocketId, setRemoteSocketId] = useState("");
@@ -11,7 +10,7 @@ const RoomScreen = () => {
     setRemoteSocketId(id);
   }, []);
 
-  const handleCallUser = useCallback(() =>
+  const handleCallUser = useCallback(async () =>
   {
     const stream = await navigator.mediaDevices.getUserMedia({
       audio:true,
@@ -43,3 +42,4 @@ const RoomScreen = () => {
 };
 
 export default RoomScreen;
+
