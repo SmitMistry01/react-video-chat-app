@@ -1,8 +1,3 @@
-//RTCPeerConnection interface represents a WebRTC connection between the local computer and a remote peer.
-//It provides methods to connect to a remote peer, maintain and monitor the connection,
-//and close the connection once it's no longer needed.
-
-//https://webrtc.org/getting-started/peer-connections
 class PeerService {
   constructor() {
     if (!this.peer) {
@@ -19,12 +14,27 @@ class PeerService {
     }
   }
 
-  async getOffer(){
-      if(this.peer){
-          const offer = await this.peer.createOffer();
-          await this.peer.setLocalDescription(new RTCSessionDescription(offer));
-          return offer;
-      }
+  async getAnswer(offer) {
+    if (this.peer) {
+      await this.peer.setRemoteDescription(offer);
+      const ans = await this.peer.createAnswer();
+      await this.peer.setLocalDescription(new RTCSessionDescription(ans));
+      return ans;
+    }
+  }
+
+  async setLocalDescription(ans) {
+    if (this.peer) {
+      await this.peer.setRemoteDescription(new RTCSessionDescription(ans));
+    }
+  }
+
+  async getOffer() {
+    if (this.peer) {
+      const offer = await this.peer.createOffer();
+      await this.peer.setLocalDescription(new RTCSessionDescription(offer));
+      return offer;
+    }
   }
 }
 
