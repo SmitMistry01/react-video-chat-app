@@ -14,6 +14,7 @@ const LobbyScreen = () => {
   const handleSubmitForm = useCallback(
     (e) => {
       e.preventDefault(); //form autosubmit na ho
+      //This sends the user's email and the room number to the server.
       socket.emit("room:join", { email, room });
     },
     [email, room, socket]
@@ -27,8 +28,11 @@ const LobbyScreen = () => {
   },[navigate]);
 
   useEffect(() => {
+    //This ensures that when the room:join event is received,
+    //the handleJoinRoom function is executed
     socket.on("room:join",handleJoinRoom);
   }, [socket]);
+
 
   return (
     <div className="text-center p-4 h-50 w-50 border-4 ">
